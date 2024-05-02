@@ -1,14 +1,12 @@
-
+<!-- can be deleted later -->
 
 <header class="header-container">
-    <!-- <h1> Tekno Events </h1> -->
-    <div class="row">
-            <img src="images/TeknoLogo3.png", height = 40 width = 200/>
-        </div>
+    <div>
+        <img src="images/TeknoLogo3.png", height = 40 width = 200/>
+    </div>
 </header>
 
 <body>
-
     <div>
         <h1> Welcome to TeknoEvents! </h1> <br>
 
@@ -23,7 +21,5 @@
                 Login to an account
             </a>
         </span>
-
     </div>
-
 </body>

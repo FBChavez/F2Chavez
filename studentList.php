@@ -31,8 +31,9 @@ $result = $conn->query($query);
                 <th>Account Id</th>
                 <th>Email Address</th>
                 <th>Username</th>
-                <th>Password</th>
                 <th>User Type</th>
+                <th>Year Level</th>
+                <th>Program</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -42,8 +43,9 @@ $result = $conn->query($query);
                 <td><?php echo $row['acctid'] ?></td>
                 <td><?php echo $row['emailadd'] ?></td>
                 <td><?php echo $row['username'] ?></td>
-                <td><?php echo $row['password'] ?></td>
                 <td><?php echo $row['usertype'] ?></td>
+                <td><?php echo $row['yearlevel'] ?></td>
+                <td><?php echo $row['program'] ?></td>
                 <td>
                     <form action="viewUser.php" method="post">
                         <input type="hidden" name="acctid" value="<?php echo $row['acctid'] ?>">

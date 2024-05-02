@@ -36,7 +36,7 @@
             if(isset($_POST['btnLogin'])){
                 $uname=$_POST['txtusername'];
                 $pwd=$_POST['txtpassword'];
-                //check tbluseraccount if username is existing
+
                 $sql ="Select * from tbluseraccount where username='".$uname."'";
                 $result = mysqli_query($connection,$sql);
                 $count = mysqli_num_rows($result);
@@ -56,7 +56,7 @@
             }
         }
     }
-
+/*
     function toRegister(){
         global $stored_users, $connection;
         if(isset($_POST['btnRegister'])){
@@ -88,6 +88,42 @@
             }
         }
     }
+*/
+    function toRegister(){
+            global $stored_users, $connection;
+        if(isset($_POST['btnRegister'])){
+            $fname=$_POST['txtfirstname'];
+            $lname=$_POST['txtlastname'];
+            $gender=$_POST['txtgender'];
+
+            $email=$_POST['txtemail'];
+            $uname=$_POST['txtusername'];
+            $pword=$_POST['txtpassword'];
+            $utype=$_POST['txtusertype'];
+            $yrlvl=$_POST['txtyearlevel'];
+            $prog=$_POST['txtprogram'];
+
+            $hashedPassword = password_hash($pword, PASSWORD_DEFAULT);
+
+            $sql2 ="Select * from tbluseraccount where username='".$uname."'";
+            $result = mysqli_query($connection,$sql2);
+            $row = mysqli_num_rows($result);
+            if($row == 0){
+                $sql1 ="Insert into tbluserprofile(firstname,lastname,gender) values('".$fname."','".$lname."','".$gender."')";
+                mysqli_query($connection,$sql1);
+
+                $user_id = mysqli_insert_id($connection);
+                $sql ="Insert into tbluseraccount(emailadd,username,password,usertype,yearlevel, program)
+                values('".$email."', '".$uname."', '".$hashedPassword."', '".$utype."', '".$yrlvl."', '".$prog."')";
+                mysqli_query($connection,$sql);
+                echo "<script>alert('Your registration was successful')</script>";
+                header("location: home.php");
+            } else{
+                echo "<div class='message-box error'>Username already existing.</div>";
+            }
+        }
+    }
+
     function allEvents() {
         global $stored_users, $connection;
         $query = "SELECT e.*, a.name AS adminName FROM tblevent e INNER JOIN tbladmin a ON e.adminid = a.adminid";

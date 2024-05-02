@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-/* Common attributes */
 *{
     margin: 0;
     padding: 0;
@@ -7,46 +6,214 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body{
-    background-color: #e2e2e2;
+/* ----------------------- FOR HEADER (START) ----------------------- */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+.header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+
+    background-color: #4b6043;
+    color: white;
+}
+/* ----------------------- FOR HEADER (END) ----------------------- */
+
+/* ----------------------- FOR BODY (START) ----------------------- */
+body {
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+
+    background-color: #e2e2e2;
 }
 
-.container{
+.body-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+/* ----------------------- FOR HEADER (END) ----------------------- */
+
+/* ----------------------- FOR FOOTER (START) ----------------------- */
+.footer {
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
+.footer-container {
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+    background-color: transparent;
+    color: black;
+}
+/* ----------------------- FOR FOOTER (END) ----------------------- */
+
+/* ----------------------- FOR NAV (START) ----------------------- */
+.nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.nav {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.nav a {
+    padding: 10px 20px;
+    margin: 0;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-link {
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 16px;
+    text-decoration: none;
+    margin-right: 10px;
+
+    color: black;
+    background-color: white;
+}
+
+.nav-link:hover {
+    background-color: rgb(54, 79, 82);
+    transition: 0.1s ease-in;
+
+    color: white;
+}
+/* ----------------------- FOR NAV (END) ----------------------- */
+
+/* ----------------------- FOR MOST CONTAINERS (START) ----------------------- */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #fff;
     border-radius: 50px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 55%;
     max-width: 100%;
     min-height: 500px;
+    position: relative;
 }
 
-.container p{
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
+.form-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+
+    left: 0;
+    width: 50%;
+    z-index: 2;
 }
 
-.container span{
-    font-size: 12px;
-}
+.prompt-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    padding: 0 30px;
+    text-align: center;
+    border-radius: 150px 0 0 100px;
 
-.container a{
-    color: #333;
-    font-size: 20px;
+    background: linear-gradient(to right, #1b391d, #26592d);
+    color: #fff;
+}
+/* ----------------------- FOR MOST CONTAINERS (END) ----------------------- */
+
+/* ----------------------- FOR BUTTONS (START) ----------------------- */
+#register, #login {
     text-decoration: none;
-    margin: 15px 0 10px;
+
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    border-color: #fff;
 }
 
-.container select {
-    background-color: #eee;
+#register:hover, #login:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(54, 79, 82);
+
+    transition: .2s;
+}
+/* SUBMIT STYLES */
+input[type="submit"] {
+    width: 100%;
+    height: 45px;
+    background: #F0ECE3;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    border: 2px solid #222831;
+}
+
+input[type="submit"]:hover {
+    color:white;
+    background-color: rgb(54, 79, 82);
+    transition: .2s;
+}
+/* ----------------------- FOR BUTTONS (END) ----------------------- */
+
+/* ----------------------- FOR FORMS w/ CONTAINER (START) ----------------------- */
+.container form {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;
+
+    background-color: #fff;
+}
+
+.container input {
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -54,11 +221,41 @@ body{
     border-radius: 8px;
     width: 100%;
     outline: none;
+
+    background-color: #eee;
 }
 
+.container select {
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
 
+    background-color: #eee;
+}
 
-.container button{
+.container p {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
+
+.container span {
+    font-size: 12px;
+}
+
+.container a {
+    color: #333;
+    font-size: 20px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button {
     background-color: rgb(31, 71, 23);
     color: #fff;
     font-size: 12px;
@@ -71,34 +268,10 @@ body{
     margin-top: 10px;
     cursor: pointer;
 }
+/* ----------------------- FOR FORMS (END) ----------------------- */
 
-.container button.hidden{
-    background-color: transparent;
-    border-color: #fff;
-}
-
-.container form{
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 40px;
-    height: 100%;
-}
-
-.container input{
-    background-color: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-}
-
-
+/* ------------------------------------------------------ */
+/* for now, not needed since no animation
 
 .form-container{
     position: absolute;
@@ -183,92 +356,12 @@ body{
 
 .container.active .toggle-right{
     transform: translateX(200%);
-}   
-
-
-
-/* div, span {
-    border: 1px solid black;
-} */
-
-.nav-container{
-    /* display: flex; */
-    align-items: center;
 }
 
-.nav{
-    margin-left: 10px;
-}
+*/
 
-.nav a{
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 0;
-    /* background-color: aqua;
-    border: 1px solid black; */
-    border-radius: 20px;
-}
-
-/* FOR HEADER */
-
-.header-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #4b6043;
-    color: white;
-    padding: 20px;
-
-    /* margin-right: 6%; */
-    display: flex;
-    /* flex-direction: row; */
-    justify-content: right; 
-    justify-content: space-between; /* Align items to the start and end */
-    align-items: center; /* Vertically center items */
-}
-.nav a{
-    color: black;
-    text-decoration: none;
-    background-color: white;
-    border-radius: 5px
-}
-.nav a:hover{
-    color: white;
-    background-color: rgb(54, 79, 82);
-    transition: 0.1s ease-in;
-}
-
-.nav-container{
-    display: flex;
-    align-items: center;
-
-}
-
-.nav{
-    margin-left: 10px;
-}
-
-.nav a{
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 0;
-    /* background-color: aqua;
-    border: 1px solid black; */
-    border-radius: 20px;
-}
 hr{
-        margin:0;
-}
-/* FOR FOOTER */
-.footer-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: transparent;
-    color: black;
-    padding: 20px; /* Adjust as needed */
+    margin:0;
 }
 
 .center-form{
@@ -343,33 +436,16 @@ form .txt_field{
 }
 
 input[type="submit"]{
-  width: 100%;
-  height: 45px;
-  background: #F0ECE3 ;
-  outline: none;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: 500;
-  border: 2px solid #222831;
-}
-  
-input[type="submit"]:hover{
-    color:white;
-    background-color: rgb(54, 79, 82);
-    transition: .2s;
-}
-
-#register, #login{
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-}
-
-#register:hover, #login:hover{
-    color:rgb(54, 79, 82);
-    transition: .2s;
-    text-decoration: underline;
+    width: 100%;
+    height: 45px;
+    background: #F0ECE3 ;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    border: 2px solid #222831;
 }
 
 .signup_link{
@@ -491,7 +567,7 @@ input[type="submit"]:hover{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    /* height: 100vh; */
+    margin-top: 7%;
 }
 
 .all-events{
@@ -785,11 +861,13 @@ input[type="submit"]:hover{
 }
 
 .banner {
+    margin: auto;
     width: 100%;
     max-width: 100%;
     height: auto;
+    object-fit: contain;
     display: block;
-    margin-bottom: 20px; /* Adjust as needed */
+    text-align: center;
 }
 
 /* Content container styles */

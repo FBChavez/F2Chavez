@@ -1,11 +1,16 @@
-<title>TeknoEvents - Admin</title>
-<link rel="icon" type="image/x-icon" href="images/TeknoLogo4.png">
-<link rel="stylesheet" type="text/css" href="css/teknoStyles.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="script.js"></script>
+<head>
+    <title>TeknoEvents - Admin</title>
 
-<style>
-    body{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/TeknoLogo4.png">
+    <link rel="stylesheet" type="text/css" href="css/teknoStyles.css">
+<!--
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+-->
+    <style>
+        body{
             /* background-image: url('images/background/metroevent2.png'); */
             background-repeat: no-repeat;
             background-size: 100% 100%;
@@ -42,6 +47,7 @@
             background-color: #fff;
             border-radius: 50px;
         }
+
         .create-inner-container{
             width: 25%;
             margin: auto;
@@ -51,13 +57,24 @@
             background-color: #31322f;
             border: 1px solid rgb(255, 255, 255) ;
         }
-</style>
+    </style>
+</head>
+
+<?php
+    $currentPage = basename($_SERVER['PHP_SELF'], ".php");
+?>
 
 <div class="header-container">
     <div class="nav-container">
-        <div class="row" style="display: flex; justify-content: center; align-items: center;">
+        <div>
             <img src="images/TeknoLogo3.png", height = 40 width = 200/>
         </div>
+
+        <?php
+            $excludePages = array("administratorLogin");
+            if (!in_array($currentPage, $excludePages)) {
+        ?>
+
         <span class="nav">
             <a href="administratorDashboard.php" class="nav-link" >
                 Events
@@ -81,9 +98,11 @@
         </span>
 
         <span class="nav">
-            <a href="administratorLogin.php">
+            <a href="administratorLogin.php" class="nav-link" >
                 Log Out
             </a>
         </span>
+
+        <?php } ?>
     </div>
 </div>
