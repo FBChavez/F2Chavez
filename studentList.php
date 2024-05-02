@@ -25,6 +25,7 @@ $result = $conn->query($query);
 </style>
 
 <div class="userlist-container">
+    List of All User Accounts
     <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
         <thead>
             <tr>
