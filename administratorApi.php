@@ -65,6 +65,7 @@
             $stmt2->close();
         }
     }
+
     function allEvents() {
         global $stored_admin, $connection, $stored_events;
         // Query to fetch event details from the database
@@ -117,28 +118,78 @@
                 $result_name = $connection->query($query_name);
                 $row_name = $result_name->fetch_assoc();
 
-                // Output event details
-                echo '
-                    <div class="the-event">
-                        <a href="events.php?eventid='.$row['eventid'].'">
-                            <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
-                        </a>
-                        <hr style="margin-top:10;margin-bottom:10;">
-                        <p>◦  Administrator: ' . $row_name['name'] . '</p>
-                        <p>◦ Description: ' . $row['eventdescription'] . '</p>
-                        <p>◦ Venue: ' . $row['eventvenue'] . '</p>
-                        <p>◦ Fee: $' . $row['eventfee'] . '</p>
-                        <p>◦ Date: ' . $row['date'] . '</p>
-                        <p>◦ Time: ' . $row['time'] . '</p>
-                        <div>Cancel the "'. $row['eventtitle'] .'" Event? </div>
-                        <form action="" method="POST">   
-                            <input type="hidden" name="eventid" value = '.$row['eventid'].' >
-                            <textarea id="cancelReason" name="cancellationReason" method="POST" placeholder="Explain the sudden cancellation of the event to the participants"></textarea>
-                            <br>
-                            <input type="submit" name="cancel" value="Cancel Event">
-                        </form>
-                    </div>
-                ';
+
+                $currentPage = basename($_SERVER['PHP_SELF'], ".php");
+                $excludePages = array("reports");
+                if (!in_array($currentPage, $excludePages)) {
+                    // Output event details
+                    echo '
+                        <div class="the-event">
+                            <a href="events.php?eventid='.$row['eventid'].'">
+                                <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
+                            </a>
+                            <hr style="margin-top:10;margin-bottom:10;">
+                            <p>◦ Administrator: ' . $row_name['name'] . '</p>
+                            <p>◦ Description: ' . $row['eventdescription'] . '</p>
+                            <p>◦ Venue: ' . $row['eventvenue'] . '</p>
+                            <p>◦ Fee: $' . $row['eventfee'] . '</p>
+                            <p>◦ Date: ' . $row['date'] . '</p>
+                            <p>◦ Time: ' . $row['time'] . '</p>
+                            <div>Cancel the "'. $row['eventtitle'] .'" Event? </div>
+                            <form action="" method="POST">
+                                <input type="hidden" name="eventid" value = '.$row['eventid'].' >
+                                <textarea id="cancelReason" name="cancellationReason" method="POST" placeholder="Explain the sudden cancellation of the event to the participants"></textarea>
+                                <br>
+                                <input type="submit" name="cancel" value="Cancel Event">
+                            </form>
+                        </div>
+                    ';
+                } else {
+                    /*
+                        <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Event ID</th>
+                                    <th>Event Title</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Venue</th>
+                                    <th>Fee</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $row_name ?>
+                                <tr>
+                                    <td><?php echo $row['eventid'] ?></td>
+                                    <td><?php echo $row['eventtitle'] ?></td>
+                                    <td><?php echo $row['name'] ?></td>
+                                    <td><?php echo $row['eventdescription'] ?></td>
+                                    <td><?php echo $row['eventvenue'] ?></td>
+                                    <td><?php echo $row['eventfee'] ?></td>
+                                    <td><?php echo $row['date'] ?></td>
+                                    <td><?php echo $row['time'] ?></td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    */
+                    echo '
+                        <div class="event-container">
+                            <a href="events.php?eventid='.$row['eventid'].'">
+                                <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
+                            </a>
+                            <hr style="margin-top:10;margin-bottom:10;">
+                            <p> Administrator: ' . $row_name['name'] . '</p>
+                            <p> Description: ' . $row['eventdescription'] . '</p>
+                            <p> Venue: ' . $row['eventvenue'] . '</p>
+                            <p> Fee: $' . $row['eventfee'] . '</p>
+                            <p> Date: ' . $row['date'] . '</p>
+                            <p> Time: ' . $row['time'] . '</p>
+                        </div>
+                    ';
+                }
             }
         } else {
             echo 'No events found.';

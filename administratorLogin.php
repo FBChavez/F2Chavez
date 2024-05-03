@@ -8,7 +8,7 @@
 <head>
     <style>
         .prompt-container {
-            background: linear-gradient(to right, #9B870C, #800000);
+            background: linear-gradient(to right, #800000, #993333);
         }
     </style>
 </head>

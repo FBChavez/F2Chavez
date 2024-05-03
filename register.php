@@ -48,7 +48,6 @@
                         }
                     ?>
 
-
                     <input type="submit" name="btnRegister" value="Register">
                 </form>
             </div>
