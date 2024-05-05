@@ -23,7 +23,7 @@
 -->
 
 <body>
-    <div class="body-container">
+    <div class="body-container" style="margin: 0%;">
         <h1> Welcome to TeknoEvents! </h1>
 
         <div class="nav-links">

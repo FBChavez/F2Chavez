@@ -82,12 +82,12 @@
         </span>
 
         <span class="nav">
-            <a href="eventsCreator.php" class="nav-link" >
+            <a href="administratorEventsCreator.php" class="nav-link" >
                 Create Events
             </a>
         </span>
         <span class="nav">
-            <a href="studentList.php" class="nav-link" >
+            <a href="administratorStudentList.php" class="nav-link" >
                 All Users
             </a>
         </span>
@@ -103,6 +103,9 @@
             </a>
         </span>
 
+        <div style="position: absolute; top: 30px; right: 20px;">
+            Hello admin <?php echo $_SESSION['name']; ?>
+        </div>
         <?php } ?>
     </div>
 </div>

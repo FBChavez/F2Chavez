@@ -13,7 +13,9 @@
         //     // eventCancel($eventId, $cancellationReason);
         // }
     }
-
+    if (isset($_SESSION['adminid'])){
+        $adminid = $_SESSION['adminid'];
+    }
 ?>
 
 <div class="create-container">

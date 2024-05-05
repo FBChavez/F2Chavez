@@ -33,11 +33,13 @@
                 Events
             </a>
         </span>
+        <!-- might not use
         <span class="nav">
             <a href="eventsOrganizer.php" class="nav-link">
                 Events Organizer
             </a>
         </span>
+        -->
         <span class="nav">
             <a href="notification.php" class="nav-link">
                 Notification

@@ -7,6 +7,10 @@
     if (!isset($_SESSION['username'])){
         header('location: administratorLogin.php');
     }
+
+    if (isset($_SESSION['adminid'])){
+        $adminid = $_SESSION['adminid'];
+    }
 ?>
 
 <div id="content-placeholder">

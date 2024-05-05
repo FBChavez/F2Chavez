@@ -24,6 +24,7 @@
                     // Admin authentication successful, store admin details
                     $stored_admin = $adminData;
                     $_SESSION['username'] = $adminData['username'];
+                    $_SESSION['name'] = $adminData['name'];
                     $_SESSION['adminid'] = $adminData['adminid'];
                     header("location: administratorDashboard.php");
                     exit();
@@ -32,6 +33,7 @@
             echo "<div class='message-box error'>Incorrect username or password.</div>";
         }
     }
+
     function createEvent(){
         global $connection, $stored_events;
         $lastEvent = end($stored_events);
@@ -82,7 +84,7 @@
               
                 // Output event details
                 echo '
-                    <div class="the-event">
+                    <div class="the-event" style="width: 80%;">
                         <center>
                         <h2>' . $row['eventtitle'] . '</h2>
                         </center>
@@ -120,11 +122,11 @@
 
 
                 $currentPage = basename($_SERVER['PHP_SELF'], ".php");
-                $excludePages = array("reports");
+                $excludePages = array("administratorReports");
                 if (!in_array($currentPage, $excludePages)) {
                     // Output event details
                     echo '
-                        <div class="the-event">
+                        <div class="the-event" style="width: 90%;">
                             <a href="events.php?eventid='.$row['eventid'].'">
                                 <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
                             </a>
@@ -145,48 +147,36 @@
                         </div>
                     ';
                 } else {
-                    /*
-                        <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Event ID</th>
-                                    <th>Event Title</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Venue</th>
-                                    <th>Fee</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($row = $row_name ?>
-                                <tr>
-                                    <td><?php echo $row['eventid'] ?></td>
-                                    <td><?php echo $row['eventtitle'] ?></td>
-                                    <td><?php echo $row['name'] ?></td>
-                                    <td><?php echo $row['eventdescription'] ?></td>
-                                    <td><?php echo $row['eventvenue'] ?></td>
-                                    <td><?php echo $row['eventfee'] ?></td>
-                                    <td><?php echo $row['date'] ?></td>
-                                    <td><?php echo $row['time'] ?></td>
-                                </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    */
                     echo '
-                        <div class="event-container">
-                            <a href="events.php?eventid='.$row['eventid'].'">
-                                <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
-                            </a>
-                            <hr style="margin-top:10;margin-bottom:10;">
-                            <p> Administrator: ' . $row_name['name'] . '</p>
-                            <p> Description: ' . $row['eventdescription'] . '</p>
-                            <p> Venue: ' . $row['eventvenue'] . '</p>
-                            <p> Fee: $' . $row['eventfee'] . '</p>
-                            <p> Date: ' . $row['date'] . '</p>
-                            <p> Time: ' . $row['time'] . '</p>
+                        <div class="the-event">
+                            <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Event ID</th>
+                                        <th>Event Title</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Venue</th>
+                                        <th>Fee</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row = $row_name ?>
+                                    <tr>
+                                        <td>' . $row['eventid'] . '</td>
+                                        <td>' . $row['eventtitle'] . '</td>
+                                        <td>' . $row_name['name'] . '</td>
+                                        <td>' . $row['eventdescription'] . '</td>
+                                        <td>' . $row['eventvenue'] . '</td>
+                                        <td>' . $row['eventfee'] . '</td>
+                                        <td>' . $row['date'] . '</td>
+                                        <td>' . $row['time'] . '</td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
                         </div>
                     ';
                 }

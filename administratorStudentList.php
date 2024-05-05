@@ -1,9 +1,14 @@
 <?php
+    session_start();
     include 'includes/administratorHeader.php';
 
     $conn = new mysqli('localhost', 'root', '', 'dbchavezf2');
     $query = "SELECT * FROM tbluseraccount";
     $result = $conn->query($query);
+
+    if (isset($_SESSION['adminid'])){
+        $adminid = $_SESSION['adminid'];
+    }
 ?>
 
 <style>
@@ -40,7 +45,7 @@
 </style>
 
 <body>
-    <div class="body-container">
+    <div class="body-container" style="margin-top: 7%;">
         <div class="userlist-container">
             List of All User Accounts
             <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -86,10 +91,11 @@
                     <?php endwhile; ?>
                 </tbody>
             </table>
+
+            <a href="administratorReports.php">
+                <button class="hidden" id="reports">Open Reports</button>
+            </a>
         </div>
-        <a href="reports.php">
-            <button class="hidden" id="reports">Open Reports</button>
-        </a>
     </div>
 </body>
 

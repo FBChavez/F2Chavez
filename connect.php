@@ -45,11 +45,22 @@
         usereventid INT(10) AUTO_INCREMENT PRIMARY KEY,
         acctid INT(10) NOT NULL,
         eventid INT(10) NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending',
         FOREIGN KEY (acctid) REFERENCES tbluseraccount(acctid),
         FOREIGN KEY (eventid) REFERENCES tblevent(eventid)
     )";
 
-    $sql6 = "CREATE TABLE IF NOT EXISTS tbluserprofile (
+    $sql6 = "CREATE TABLE IF NOT EXISTS tbladminuserevent (
+        id INT(10) AUTO_INCREMENT PRIMARY KEY,
+        acctid INT(10) NOT NULL,
+        eventid INT(10) NOT NULL,
+        adminid INT(10) NOT NULL,
+        FOREIGN KEY (acctid) REFERENCES tbluseraccount(acctid),
+        FOREIGN KEY (eventid) REFERENCES tblevent(eventid),
+        FOREIGN KEY (adminid) REFERENCES tbladmin(adminid)
+    )";
+
+    $sql7 = "CREATE TABLE IF NOT EXISTS tbluserprofile (
         userid INT(10) AUTO_INCREMENT PRIMARY KEY,
         firstname VARCHAR(50) NOT NULL,
         lastname VARCHAR(50) NOT NULL,
@@ -71,15 +82,21 @@
     }
 
     if($connection->query($sql4) === FALSE) {
-        echo "Error creating table 'tbluserevent': " . $connection->error . "<br>";
+        echo "Error creating table 'tbluseraccount': " . $connection->error . "<br>";
     }
 
     if($connection->query($sql5) === FALSE) {
-        echo "Error creating table 'tbladmin': " . $connection->error . "<br>";
+        echo "Error creating table 'tbluserevent': " . $connection->error . "<br>";
     }
 
     if($connection->query($sql6) === FALSE) {
+        echo "Error creating table 'tbladminuserevent': " . $connection->error . "<br>";
+    }
+
+    if($connection->query($sql7) === FALSE) {
         echo "Error creating table 'tbluserprofile': " . $connection->error . "<br>";
     }
+
+
 
 ?>
