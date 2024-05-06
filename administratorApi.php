@@ -99,7 +99,11 @@
                 ';
             }
         } else {
-            echo 'No events found.';
+            echo '
+                <div class="body-container" style="height: 80vh; text-align: center;">
+                    No events found. Sad :(
+                </div>
+            ';
         }
     }
 
@@ -126,7 +130,7 @@
                 if (!in_array($currentPage, $excludePages)) {
                     // Output event details
                     echo '
-                        <div class="the-event" style="width: 90%;">
+                        <div class="the-event">
                             <a href="events.php?eventid='.$row['eventid'].'">
                                 <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
                             </a>
@@ -154,8 +158,8 @@
                                     <tr>
                                         <th>Event ID</th>
                                         <th>Event Title</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
+                                        <th>Administrator Name</th>
+                                        <th id="description">Description</th>
                                         <th>Venue</th>
                                         <th>Fee</th>
                                         <th>Date</th>
@@ -168,7 +172,7 @@
                                         <td>' . $row['eventid'] . '</td>
                                         <td>' . $row['eventtitle'] . '</td>
                                         <td>' . $row_name['name'] . '</td>
-                                        <td>' . $row['eventdescription'] . '</td>
+                                        <td id="description">' . $row['eventdescription'] . '</td>
                                         <td>' . $row['eventvenue'] . '</td>
                                         <td>' . $row['eventfee'] . '</td>
                                         <td>' . $row['date'] . '</td>
@@ -182,7 +186,11 @@
                 }
             }
         } else {
-            echo 'No events found.';
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No events found. Sad :(
+                </div>
+            ';
         }
     }
     if (isset($_POST['cancel'])) {
@@ -266,5 +274,80 @@
         $stmt->close();
 
         return $userData;
+    }
+
+
+    /* I added a table in the reports to show the number of students for each program */
+    function displayUsersPerProgram() {
+        global $connection;
+
+        $query = "SELECT program, COUNT(program) AS count FROM tbluseraccount GROUP BY program";
+
+        $result = $connection->query($query);
+
+        if ($result->num_rows > 0) {
+            echo '
+                <table id="displayCountProg">
+                    <tr>
+                        <th>Program</th>
+                        <th>No. of accounts</th>
+                    </tr>
+            ';
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                    echo "<td>" . $row['program'] . "</td>";
+                    echo "<td>" . $row['count'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No accounts! Sad :(
+                </div>
+            ';
+        }
+    }
+
+    /* table nis para participants per event */
+    function displayParticipantsPerEvent() {
+        global $connection;
+
+        $query = "SELECT e.eventtitle AS 'Event Name', a.name AS 'Admin', COUNT(aue.acctid) AS 'No. of participants', e.eventid
+                  FROM tblevent e
+                  JOIN tbladmin a ON e.adminid = a.adminid
+                  JOIN tbladminuserevent aue ON e.eventid = aue.eventid
+                  GROUP BY e.eventid
+                  ORDER BY e.eventtitle";
+        $result = $connection->query($query);
+
+        if ($result->num_rows > 0) {
+            echo '
+                <table>
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Admin</th>
+                        <th>No. of participants</th>
+                    </tr>
+            ';
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['eventid'] . '</td>
+                        <td>' . $row['Event Name'] . '</td>
+                        <td>' . $row['Admin'] . '</td>
+                        <td>' . $row['No. of participants'] . '</td>
+                </tr>
+                ';
+            }
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No events! Sad :(
+                </div>
+            ';
+        }
     }
 ?>

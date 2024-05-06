@@ -15,7 +15,7 @@
         eventid INT(10) AUTO_INCREMENT PRIMARY KEY,
         adminid INT(10) NOT NULL,
         eventtitle VARCHAR(50) NOT NULL,
-        eventdescription VARCHAR(50) NOT NULL,
+        eventdescription VARCHAR(200) NOT NULL,
         eventvenue VARCHAR(50) NOT NULL,
         eventfee INT(10) NOT NULL,
         date DATE NOT NULL,
@@ -28,7 +28,7 @@
         adminid INT(10) NOT NULL,
         eventid INT(10) NOT NULL,
         FOREIGN KEY (adminid) REFERENCES tbladmin(adminid),
-        FOREIGN KEY (eventid) REFERENCES tbladmin(eventid)
+        FOREIGN KEY (eventid) REFERENCES tblevent(eventid)
     )";
 /*
     $sql4 = "CREATE TABLE IF NOT EXISTS tbluseraccount (
@@ -42,7 +42,7 @@
     )";
 */
     $sql4 = "CREATE TABLE IF NOT EXISTS tbluseraccount (
-        accttid INT(10) AUTO_INCREMENT PRIMARY KEY,
+        acctid INT(10) AUTO_INCREMENT PRIMARY KEY,
         firstname VARCHAR(50) NOT NULL,
         lastname VARCHAR(50) NOT NULL,
         gender VARCHAR(50) NOT NULL,
@@ -114,5 +114,70 @@
     }
 */
 
+    // Insert two admins: Paul and Francis
+    $name1 = 'Paul Thomas M. Abellana';
+    $name2 = 'Francis Benedict Y. Chavez';
 
+    $username1 = 'paul';
+    $username2 = 'francis';
+
+    $password1 = 'abellana';
+    $password2 = 'chavez';
+
+    $hashed_password1 = password_hash($password1, PASSWORD_DEFAULT);
+    $hashed_password2 = password_hash($password2, PASSWORD_DEFAULT);
+
+    $check_sql1 = "SELECT * FROM tbladmin WHERE username = ?";
+    $stmt1 = mysqli_prepare($connection, $check_sql1);
+    mysqli_stmt_bind_param($stmt1, "s", $username1);
+    mysqli_stmt_execute($stmt1);
+    $result1 = mysqli_stmt_get_result($stmt1);
+    $count1 = mysqli_num_rows($result1);
+
+    if ($count1 == 0) {
+        $paul_sql = "INSERT INTO tbladmin (name, username, password) VALUES (?, ?, ?)";
+        $stmt_paul = mysqli_prepare($connection, $paul_sql);
+        mysqli_stmt_bind_param($stmt_paul, "sss", $name1, $username1, $hashed_password1);
+        mysqli_stmt_execute($stmt_paul);
+        mysqli_stmt_close($stmt_paul);
+    }
+
+    $check_sql2 = "SELECT * FROM tbladmin WHERE username = ?";
+    $stmt2 = mysqli_prepare($connection, $check_sql2);
+    mysqli_stmt_bind_param($stmt2, "s", $username2);
+    mysqli_stmt_execute($stmt2);
+    $result2 = mysqli_stmt_get_result($stmt2);
+    $count2 = mysqli_num_rows($result2);
+
+    if ($count2 == 0) {
+        $francis_sql = "INSERT INTO tbladmin (name, username, password) VALUES (?, ?, ?)";
+        $stmt_francis = mysqli_prepare($connection, $francis_sql);
+        mysqli_stmt_bind_param($stmt_francis, "sss", $name2, $username2, $hashed_password2);
+        mysqli_stmt_execute($stmt_francis);
+        mysqli_stmt_close($stmt_francis);
+    }
+
+    mysqli_stmt_close($stmt1);
+    mysqli_stmt_close($stmt2);
+
+//     // Check if existing na sila duha
+//     $check_sql1 = "SELECT * FROM tbladmin WHERE username = $username1";
+//     $result1 = mysqli_query($connection, $check_sql1);
+//     $count1 = mysqli_num_rows($result1);
+//
+//     $check_sql2 = "SELECT * FROM tbladmin WHERE username = $username2";
+//     $result2 = mysqli_query($connection, $check_sql2);
+//     $count2 = mysqli_num_rows($result2);
+//
+//     if($count1 == 0) {
+//         $paul_sql ="Insert into tbladmin(name, username, password)
+//         values('".$name1."', '".$username1."', '".$hashed_password1."')";
+//         mysqli_query($connection, $paul_sql);
+//     }
+//
+//     if($count2 == 0) {
+//         $francis_sql ="Insert into tbladmin(name, username, password)
+//         values('".$name2."', '".$username2."', '".$hashed_password2."')";
+//         mysqli_query($connection, $francis_sql);
+//     }
 ?>

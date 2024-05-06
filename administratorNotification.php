@@ -19,18 +19,29 @@
         color: #800000;
     }
 
+    table {
+        width: 100%;
+
+        background-color: white;
+    }
+
     table, th, td {
         border: 1px solid;
     }
 
-    td, th {
+    th, td {
+        width: 10%;
         text-align: center;
-        height: 50px;
+        min-height: 50px;
         padding: 10px;
     }
 
     tr:hover {
         background-color: #A24857;
+    }
+
+    #request-message {
+        width: 40%;
     }
 </style>
 

@@ -30,21 +30,27 @@
     }
 
     function toLogin(){
-        global $stored_users, $connection;
-        foreach($stored_users as $user){
+//         global $stored_users;
+        global $connection;
+//         foreach($stored_users as $user){
             if(isset($_POST['btnLogin'])){
-                $uname=$_POST['txtusername'];
-                $pwd=$_POST['txtpassword'];
+                $uname = $_POST['txtusername'];
+                $pwd = $_POST['txtpassword'];
 
-                $sql = "Select * from tbluseraccount where username='".$uname."'";
-                $result = mysqli_query($connection,$sql);
-                $count = mysqli_num_rows($result);
-                $row = mysqli_fetch_array($result);
+//                 $sql = "Select * from tbluseraccount where username='".$uname."'";
+//                 $result = mysqli_query($connection,$sql);
+//                 $count = mysqli_num_rows($result);
+//                 $row = mysqli_fetch_array($result);
+                $sql = "SELECT * FROM tbluseraccount WHERE username = ?";
+                $stmt = $connection->prepare($sql);
+                $stmt->bind_param("s", $uname);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
 
-                if($count== 0){
+                if($result->num_rows == 0){
                     echo "<div class='message-box error'>Username not existing.</div>";
-                }
-                else if(password_verify($pwd, $row[6])){
+                } else if(password_verify($pwd, $row['password'])){
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['acctid'] = $row['acctid'];
                     $_SESSION['firstname'] = $row['firstname'];
@@ -54,12 +60,11 @@
 
                     echo "<script>alert('You are logged in. Hello {$_SESSION['username']}')</script>";
                     header("location: home.php");
-                }
-                else{
+                } else{
                     echo "<div class='message-box error'>Incorrect password.</div>";
                 }
             }
-        }
+//         }
     }
 
     function toRegister(){
@@ -140,7 +145,11 @@
                 ';
             }
         } else {
-            echo 'No events found.';
+            echo '
+            <div class="body-container" style="height: 80vh; text-align: center;">
+                No events found. Sad :(
+            </div>
+            ';
         }
     }
 ?>

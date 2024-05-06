@@ -78,6 +78,7 @@ body {
 }
 
 .footer-container {
+    height: auto;
     bottom: 0;
     width: 100%;
     padding: 20px;

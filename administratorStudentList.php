@@ -45,9 +45,9 @@
 </style>
 
 <body>
-    <div class="body-container" style="margin-top: 7%;">
+    <div class="body-container" style="margin-top: 7%; overflow: auto;">
         <div class="userlist-container">
-            List of All User Accounts
+            <h1 style="padding: 10px;">List of All User Accounts</h1>
             <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                     <tr>

@@ -1,6 +1,8 @@
 <?php
     include 'connect.php';
 
+    // Note: Also used for notificationAPI
+
     if (isset($_SESSION['adminid'])){
         $adminid = $_SESSION['adminid'];
     }
@@ -94,22 +96,40 @@
                 $user_sql = "SELECT * FROM tbluseraccount WHERE acctid = $acctid";
                 $event_sql = "SELECT * FROM tblevent WHERE eventid = $eventid";
 
+                $user_result = $connection->query($user_sql);
+                $event_result = $connection->query($event_sql);
+
+                if ($user_result && $user_result->num_rows > 0) {
+                    $user_row = $user_result->fetch_assoc();
+                    $firstname = $user_row['firstname'];
+                    $lastname = $user_row['lastname'];
+                }
+
+                if ($event_result && $event_result->num_rows > 0) {
+                    $event_row = $event_result->fetch_assoc();
+                    $eventtitle = $event_row['eventtitle'];
+                }
+
                 echo '
-                    <div class="the-event" style="width: 80%;">
+                    <div class="the-event" style="width: 100%;">
                         <table id="tblUserEvents" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>Account ID</th>
+                                    <th>Full Name</th>
                                     <th>Event ID</th>
-                                    <th>Request Message</th>
+                                    <th>Event Name</th>
+                                    <th id="request-message">Request Message</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>' . $acctid . '</td>
+                                    <td>' . $firstname . ' ' . $lastname . '</td>
                                     <td>' . $eventid . '</td>
-                                    <td> User requests to join the event. </td>
+                                    <td>' . $eventtitle . '</td>
+                                    <td>' . $firstname . ' requests to join the event. </td>
                                     <td style="border-right:none;">
                                         <form method="post">
                                             <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
@@ -131,7 +151,11 @@
                 ';
             }
         } else {
-            echo "No join requests found.";
+            echo '
+                <div class="body-container" style="height: 40vh; text-align: center;">
+                    No notifications found. Sad :(
+                </div>
+            ';
         }
     }
 ?>

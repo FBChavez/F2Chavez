@@ -7,7 +7,13 @@
 
 <style>
     .report-container {
+        margin: 10px;
+        border-radius: 25px;
         text-align: center;
+        padding: 20px;
+        width: 100%;
+
+        background-color: #D3D3D3;
     }
 
     button {
@@ -23,14 +29,29 @@
         color: #800000;
     }
 
+    table {
+        width: 100%;
+
+        background-color: white;
+    }
+
     table, th, td {
         border: 1px solid;
     }
 
     td, th {
-        text-align: center;
-        height: 50px;
+        width: 10%;
+        min-height: 50px;
         padding: 10px;
+    }
+
+    #description {
+        width: 30%;
+    }
+
+    #displayCountProg {
+        width: 30%;
+        margin: 0 auto;
     }
 
     tr:hover {
@@ -39,13 +60,32 @@
 </style>
 
 <body>
-    <div class="body-container">
+    <div class="body-container" style="margin-top: 7%; overflow: auto;">
+        <h1> Reports: </h1>
         <div class="report-container">
-            My Created Events
+            <h2 style="padding: 10px;">My Created Events</h2>
             <?php
                 echo adminEvents();
             ?>
         </div>
+
+        <div class="report-container">
+            <h2 style="padding: 10px;">Number of accounts for each Program</h2>
+            <?php
+                echo displayUsersPerProgram();
+            ?>
+        </div>
+
+        <div class="report-container">
+            <h2 style="padding: 10px;">Number of participants for each Event</h2>
+            <?php
+                echo displayParticipantsPerEvent();
+            ?>
+        </div>
+
+
+
+
         <a href="administratorStudentList.php">
             <button class="hidden" id="reports">Back</button>
         </a>
