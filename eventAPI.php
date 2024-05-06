@@ -7,7 +7,7 @@
 
     if(isset($_POST['joinEvent'])){
         $eventid = $_POST['eventid'];
-        $acctid = $_SESSION['acctid'];
+        $acctid = $_POST['acctid'];
 
         if($acctid === null) {
             echo "<script>alert('Error: User ID not found.');</script>";
@@ -26,6 +26,7 @@
 
             // Adding debugging message
             echo "<script>console.log('Already requested to join the event!');</script>";
+
             // Redirecting after 3 seconds for debugging purposes
             echo "<script>setTimeout(function(){ window.location.href = 'userDashboard.php'; }, 10);</script>";
             exit();
@@ -83,14 +84,22 @@
         $sql = "SELECT * FROM tbluserevent WHERE status = 'pending'";
         $result = $connection->query($sql);
 
+
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+
+                $acctid =  $row['acctid'];
+                $eventid = $row['eventid'];
+
+                $user_sql = "SELECT * FROM tbluseraccount WHERE acctid = $acctid";
+                $event_sql = "SELECT * FROM tblevent WHERE eventid = $eventid";
+
                 echo '
                     <div class="the-event" style="width: 80%;">
                         <table id="tblUserEvents" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>USER ID</th>
+                                    <th>Account ID</th>
                                     <th>Event ID</th>
                                     <th>Request Message</th>
                                     <th colspan="2">Action</th>
@@ -98,8 +107,8 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>' . $row['acctid'] . '</td>
-                                    <td>' . $row['eventid'] . '</td>
+                                    <td>' . $acctid . '</td>
+                                    <td>' . $eventid . '</td>
                                     <td> User requests to join the event. </td>
                                     <td style="border-right:none;">
                                         <form method="post">

@@ -30,9 +30,22 @@
         FOREIGN KEY (adminid) REFERENCES tbladmin(adminid),
         FOREIGN KEY (eventid) REFERENCES tbladmin(eventid)
     )";
-
+/*
     $sql4 = "CREATE TABLE IF NOT EXISTS tbluseraccount (
         accttid INT(10) AUTO_INCREMENT PRIMARY KEY,
+        emailadd VARCHAR(50) NOT NULL,
+        username VARCHAR(50) NOT NULL,
+        password VARCHAR(100) NOT NULL,
+        usertype VARCHAR(20) NOT NULL,
+        yearlevel INT(5) NOT NULL,
+        program VARCHAR(50) NOT NULL
+    )";
+*/
+    $sql4 = "CREATE TABLE IF NOT EXISTS tbluseraccount (
+        accttid INT(10) AUTO_INCREMENT PRIMARY KEY,
+        firstname VARCHAR(50) NOT NULL,
+        lastname VARCHAR(50) NOT NULL,
+        gender VARCHAR(50) NOT NULL,
         emailadd VARCHAR(50) NOT NULL,
         username VARCHAR(50) NOT NULL,
         password VARCHAR(100) NOT NULL,
@@ -60,12 +73,14 @@
         FOREIGN KEY (adminid) REFERENCES tbladmin(adminid)
     )";
 
+/*
     $sql7 = "CREATE TABLE IF NOT EXISTS tbluserprofile (
         userid INT(10) AUTO_INCREMENT PRIMARY KEY,
         firstname VARCHAR(50) NOT NULL,
         lastname VARCHAR(50) NOT NULL,
         gender VARCHAR(50) NOT NULL
     )";
+*/
 
     if($connection->query($sql1) === FALSE) {
         /*echo "Table 'tbladmin' created successfully! <br>";
@@ -93,10 +108,11 @@
         echo "Error creating table 'tbladminuserevent': " . $connection->error . "<br>";
     }
 
+/*
     if($connection->query($sql7) === FALSE) {
         echo "Error creating table 'tbluserprofile': " . $connection->error . "<br>";
     }
-
+*/
 
 
 ?>

@@ -63,6 +63,10 @@
             </a>
         </span>
 
+        <div style="position: absolute; top: 30px; right: 20px;">
+            Hello user <?php echo $_SESSION['firstname']; ?>
+        </div>
+
         <?php } ?>
     </div>
 </header>

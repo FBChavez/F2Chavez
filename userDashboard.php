@@ -2,12 +2,17 @@
     session_start();
     include 'connect.php';
 
+    include("userApi.php");
+
     if (!isset($_SESSION['username'])){
         header('location:login.php');
     }
 
+    if (isset($_SESSION['acctid'])){
+        $acctid = $_SESSION['acctid'];
+    }
+
     include("includes/header.php");
-    include("userApi.php");
 ?>
 
 <style>

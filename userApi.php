@@ -14,19 +14,18 @@
         while ($userAccountRow = $userAccountResult->fetch_assoc()) {
             // Fetch data from tbluserprofile based on the user's ID
             $userId = $userAccountRow['acctid'];
+
+            /*
             $userProfileQuery = "SELECT * FROM tbluserprofile WHERE userid = $userId";
             $userProfileResult = $connection->query($userProfileQuery);
 
             // Check if user profile data exists
             if ($userProfileResult->num_rows > 0) {
                 $userProfileData = $userProfileResult->fetch_assoc();
+            */
 
-                // Combine user account and profile data into $userData
-                $userData = array_merge($userAccountRow, $userProfileData);
-
-                // Append $userData to $stored_users array
-                $stored_users[] = $userData;
-            }
+            $userData = $userAccountRow;
+            $stored_users[] = $userData;
         }
     }
 
@@ -45,9 +44,10 @@
                 if($count== 0){
                     echo "<div class='message-box error'>Username not existing.</div>";
                 }
-                else if(password_verify($pwd, $row[3])){
+                else if(password_verify($pwd, $row[6])){
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['acctid'] = $row['acctid'];
+                    $_SESSION['firstname'] = $row['firstname'];
 
                     // will merge userprofile and useraccount later or
                     // remove the userid in userprofile and change into acctid FK from useraccount
@@ -82,15 +82,17 @@
             $result = mysqli_query($connection,$sql2);
             $row = mysqli_num_rows($result);
             if($row == 0){
+            /*
                 $sql1 ="Insert into tbluserprofile(firstname,lastname,gender) values('".$fname."','".$lname."','".$gender."')";
                 mysqli_query($connection,$sql1);
+            */
 
                 $user_id = mysqli_insert_id($connection);
-                $sql ="Insert into tbluseraccount(emailadd,username,password,usertype,yearlevel, program)
-                values('".$email."', '".$uname."', '".$hashedPassword."', '".$utype."', '".$yrlvl."', '".$prog."')";
+                $sql ="Insert into tbluseraccount(firstname,lastname,gender,emailadd,username,password,usertype,yearlevel, program)
+                values('".$fname."', '".$lname."', '".$gender."', '".$email."', '".$uname."', '".$hashedPassword."', '".$utype."', '".$yrlvl."', '".$prog."')";
                 mysqli_query($connection,$sql);
-                echo "<script>alert('Your registration was successful')</script>";
-                header("location: home.php");
+
+                header("location: login.php");
             } else{
                 echo "<div class='message-box error'>Username already existing.</div>";
             }
