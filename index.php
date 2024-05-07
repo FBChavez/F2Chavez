@@ -24,7 +24,7 @@
 
 <body>
     <div class="body-container" style="margin: 0%; height: 100%;">
-        <h1> Welcome to TeknoEvents! </h1>
+        <h1 style="padding: 20px;"> Welcome to TeknoEvents! </h1>
 
         <div class="nav-links">
             <span class="nav">
