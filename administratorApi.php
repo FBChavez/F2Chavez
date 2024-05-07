@@ -282,7 +282,6 @@
         global $connection;
 
         $query = "SELECT program, COUNT(program) AS count FROM tbluseraccount GROUP BY program";
-
         $result = $connection->query($query);
 
         if ($result->num_rows > 0) {
@@ -346,6 +345,37 @@
             echo '
                 <div class="body-container" style="height: 50vh; text-align: center;">
                     No events! Sad :(
+                </div>
+            ';
+        }
+    }
+
+    function displayUserEvents() {
+        global $connection;
+
+        $query = "SELECT e.eventid, e.eventtitle, ua.username, ue.status
+                  FROM tbluserevent ue
+                  INNER JOIN tbluseraccount ua ON ue.acctid = ua.acctid
+                  INNER JOIN tblevent e ON ue.eventid = e.eventid";
+
+        $result = $connection->query($query);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['eventid'] . '</td>
+                        <td>' . $row['username'] . '</td>
+                        <td>' . $row['eventtitle'] . '</td>
+                        <td>' . $row['status'] . '</td>
+                    </tr>
+                ';
+            }
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No user events! Sad :(
                 </div>
             ';
         }

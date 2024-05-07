@@ -69,7 +69,7 @@
             exit();
         }
 
-        if (isset($_POST['deny_join'])) {
+        if (isset($_POST['reject_join'])) {
             $acctid = $_POST['acctid'];
             $eventid = $_POST['eventid'];
 
@@ -129,7 +129,7 @@
                                     <td>' . $firstname . ' ' . $lastname . '</td>
                                     <td>' . $eventid . '</td>
                                     <td>' . $eventtitle . '</td>
-                                    <td>' . $firstname . ' requests to join the event. </td>
+                                    <td>' . $firstname . ' requests to join the event <b>"' . $eventtitle . '".</b></td>
                                     <td style="border-right:none;">
                                         <form method="post">
                                             <input type="hidden" name="acctid" value="' . $row['acctid'] . '">

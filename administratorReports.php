@@ -63,27 +63,54 @@
     <div class="body-container" style="margin-top: 7%; overflow: auto;">
         <h1> Reports: </h1>
         <div class="report-container">
-            <h2 style="padding: 10px;">My Created Events</h2>
-            <?php
-                echo adminEvents();
-            ?>
+            <div class="userlist-container">
+                <h2 style="padding: 10px;">My Created Events</h2>
+                <?php
+                    echo adminEvents();
+                ?>
+            </div>
         </div>
 
         <div class="report-container">
-            <h2 style="padding: 10px;">Number of accounts for each Program</h2>
-            <?php
-                echo displayUsersPerProgram();
-            ?>
+            <div class="userlist-container">
+                <h2 style="padding: 10px;">Number of accounts for each Program</h2>
+                <?php
+                    echo displayUsersPerProgram();
+                ?>
+            </div>
         </div>
 
         <div class="report-container">
-            <h2 style="padding: 10px;">Number of participants for each Event</h2>
-            <?php
-                echo displayParticipantsPerEvent();
-            ?>
+            <div class="userlist-container">
+                <h2 style="padding: 10px;">Number of participants for each Event</h2>
+                <?php
+                    echo displayParticipantsPerEvent();
+                ?>
+            </div>
         </div>
 
+        <div class="report-container">
+            <div class="userlist-container">
+                <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <h2 style="padding: 10px;">
+                    All User Events
+                </h2>
+                    <thead>
+                        <tr>
+                            <th>Event ID</th>
+                            <th>User</th>
+                            <th>Event Title</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            echo displayUserEvents();
+                        ?>
+                    </tbody>
+                </table>
 
+        </div>
 
 
         <a href="administratorStudentList.php">
