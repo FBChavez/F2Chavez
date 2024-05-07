@@ -110,15 +110,13 @@
     function adminEvents() {
         global $connection;
         global $adminid;
-        // Get the adminid of the current administrator from session
+
             $adminid = $_SESSION['adminid'];
-            // Query to fetch only the events created by the current administrator
+
             $query = "SELECT * FROM tblevent WHERE adminid = '$adminid'";
             $result = $connection->query($query);
 
-        // Check if there are any rows returned
         if ($result->num_rows > 0) {
-            // Loop through each row
             while ($row = $result->fetch_assoc()) {
                 $query_name = "SELECT name FROM tbladmin WHERE adminid = '$adminid'";
                 $result_name = $connection->query($query_name);
@@ -128,7 +126,6 @@
                 $currentPage = basename($_SERVER['PHP_SELF'], ".php");
                 $excludePages = array("administratorReports");
                 if (!in_array($currentPage, $excludePages)) {
-                    // Output event details
                     echo '
                         <div class="the-event">
                             <a href="events.php?eventid='.$row['eventid'].'">
@@ -193,26 +190,27 @@
             ';
         }
     }
+
     if (isset($_POST['cancel'])) {
         // Retrieve the event ID from the form submission
         $eventid = $_POST['eventid'];
-        
+
         // Debugging: Echo the event ID to see if it's properly retrieved
         echo "Event ID: " . $eventid;
-    
+
         // Delete related records in tbladminevent first
         $delete_adminevent_sql = "DELETE FROM tbladminevent WHERE eventid = ?";
         $delete_adminevent_stmt = $connection->prepare($delete_adminevent_sql);
         $delete_adminevent_stmt->bind_param("i", $eventid);
         $delete_adminevent_stmt->execute();
         $delete_adminevent_stmt->close();
-    
+
         // Delete the event from the tblevent table
         $sql = "DELETE FROM tblevent WHERE eventid = $eventid";
-    
+
         // Debugging: Echo the SQL query to see if it's constructed correctly
         echo "SQL Query: " . $sql;
-    
+
         if ($connection->query($sql) === TRUE) {
             echo "Event canceled successfully";
         } else {

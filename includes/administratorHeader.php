@@ -57,6 +57,20 @@
             background-color: #31322f;
             border: 1px solid rgb(255, 255, 255) ;
         }
+
+        .edit-container{
+            width: 25%;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            /* background-color: rgb(255, 255, 255, 85%); */
+            background-color: #31322f;
+            border: 1px solid rgb(255, 255, 255) ;
+        }
+
+        .back-link {
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -104,7 +118,7 @@
         </span>
 
         <div style="position: absolute; top: 30px; right: 20px;">
-            Hello admin <?php echo $_SESSION['name']; ?>
+            Hello admin, <?php echo $_SESSION['name']; ?>!
         </div>
         <?php } ?>
     </div>

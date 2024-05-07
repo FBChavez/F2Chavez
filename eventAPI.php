@@ -134,7 +134,7 @@
                                         <form method="post">
                                             <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
                                             <input type="hidden" name="eventid" value="' . $row['eventid'] . '">
-                                            <button type="submit" name="accept_join">Accept</button>
+                                            <button type="submit" name="accept_join" id="accept_req">Accept</button>
                                         </form>
                                     </td>
                                     <td style="border-left:none;">

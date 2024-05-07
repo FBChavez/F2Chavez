@@ -8,13 +8,14 @@
 <style>
     button {
         margin: 5px;
-        padding: 5px;
+        padding: 14px;
+        border-radius: 10px;
 
         background-color: #800000;
         color: white;
     }
 
-    button:hover {
+    button:hover, #accept_req:hover {
         background-color: white;
         color: #800000;
     }
@@ -43,6 +44,11 @@
     #request-message {
         width: 40%;
     }
+
+    #accept_req {
+        background-color: #1b391d;
+    }
+
 </style>
 
 <body>
