@@ -113,26 +113,37 @@
                 $excludePages = array("administratorReports");
                 if (!in_array($currentPage, $excludePages)) {
                     echo '
-                        <div class="the-event">
-                            <a href="events.php?eventid='.$row['eventid'].'">
-                                <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
-                            </a>
-                            <hr style="margin-top:10;margin-bottom:10;">
-                            <p>◦ Administrator: ' . $row_name['name'] . '</p>
-                            <p>◦ Description: ' . $row['eventdescription'] . '</p>
-                            <p>◦ Venue: ' . $row['eventvenue'] . '</p>
-                            <p>◦ Fee: $' . $row['eventfee'] . '</p>
-                            <p>◦ Date: ' . $row['date'] . '</p>
-                            <p>◦ Time: ' . $row['time'] . '</p>
-                            <div>Cancel the "'. $row['eventtitle'] .'" Event? </div>
-                            <form action="" method="POST">
-                                <input type="hidden" name="eventid" value = '.$row['eventid'].' >
-                                <textarea id="cancelReason" name="cancellationReason" method="POST" placeholder="Explain the sudden cancellation of the event to the participants"></textarea>
-                                <br>
-                                <input type="submit" name="cancel" value="Cancel Event">
-                            </form>
-                        </div>
+                    <div class="the-event">
+                        <a href="events.php?eventid='.$row['eventid'].'">
+                            <h2 style="margin: 0;">'. $row['eventtitle'] .'</h2>
+                        </a>
+                        <hr style="margin-top:10;margin-bottom:10;">
+                        <p>◦ Administrator: ' . $row_name['name'] . '</p>
+                        <p>◦ Description: ' . $row['eventdescription'] . '</p>
+                        <p>◦ Venue: ' . $row['eventvenue'] . '</p>
+                        <p>◦ Fee: $' . $row['eventfee'] . '</p>
+                        <p>◦ Date: ' . $row['date'] . '</p>
+                        <p>◦ Time: ' . $row['time'] . '</p>
+                        <div>Deactivate/Activate the "'. $row['eventtitle'] .'" Event? </div>
+                        <input type="hidden" name="eventid" value="'.$row['eventid'].'">
                     ';
+                
+                    echo '<form method="post">
+                            <input type="hidden" name="eventid" value="' . $row['eventid'] . '">
+                            <input type="hidden" name="eventtitle" value="' . $row['eventtitle'] . '">
+                            <input type="hidden" name="status" value="' . $row['status'] . '">
+                    ';
+                    
+                        if($row['status'] == "active") {
+                            echo '<input type="submit" name="btnDisplayDeactivationEventConfirmation" id="deactivate" value="Deactivate Event">';
+                        } else {
+                            echo '<input type="submit" name="btnDisplayActivationEventConfirmation" id="activate" value="Activate Event">';
+                        }
+                    
+                    echo '</form>';
+                    
+                    echo '</div>';
+                    
                 } else {
                     echo '
                         <div class="the-event">
@@ -176,28 +187,118 @@
             ';
         }
     }
-
-    if (isset($_POST['cancel'])) {
+    if(isset($_POST['btnDisplayDeactivationEventConfirmation'])) {
         $eventid = $_POST['eventid'];
+        $eventtitle = $_POST['eventtitle'];
+        $status = $_POST['status'];
+        echo '
+            <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                <p>Are you sure you want to deactivate the event "' . $eventtitle . '"?</p>
+                <form method="post">
+                    <input type="hidden" name="eventid" value="' . $eventid . '">
+                    <div style="text-align: center;">
+                        <input type="hidden" name="eventid" value="' . $eventid . '">
+                        <input type="hidden" name="eventtitle" value="' . $eventtitle . '">
+                        <input type="hidden" name="status" value="' . $status . '">
+                        <input type="submit" name="btnDeactivateEvent" value="Yes" style="width: 40%;">
+                        <input type="submit" onclick="window.location.href = window.location.href;" value="No" style="width: 40%;">
+                    </div>
+                </form>
+            </div>
+        ';
+    }
 
-        echo "Event ID: " . $eventid;
+    if(isset($_POST['btnDisplayActivationEventConfirmation'])) {
+        $eventid = $_POST['eventid'];
+        $eventtitle = $_POST['eventtitle'];
+        $status = $_POST['status'];
+        echo '
+            <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                <p>Activate the event "' . $eventtitle . '"?</p>
+                <form method="post">
+                <input type="hidden" name="eventid" value="' . $eventid . '">
+                <div style="text-align: center;">
+                    <input type="hidden" name="eventid" value="' . $eventid . '">
+                    <input type="hidden" name="eventtitle" value="' . $eventtitle . '">
+                    <input type="hidden" name="status" value="' . $status . '">
+                    <input type="submit" name="btnActivateEvent" value="Yes" style="width: 40%;">
+                    <input type="submit" onclick="window.location.href = window.location.href;" value="No" style="width: 40%;">
+                </div>
+                </form>
+            </div>
+        ';
+    }
 
-        $delete_adminevent_sql = "DELETE FROM tbladminevent WHERE eventid = ?";
-        $delete_adminevent_stmt = $connection->prepare($delete_adminevent_sql);
-        $delete_adminevent_stmt->bind_param("i", $eventid);
-        $delete_adminevent_stmt->execute();
-        $delete_adminevent_stmt->close();
+    if(isset($_POST['btnDeactivateEvent'])) {
+        $eventid = $_POST['eventid'];
+        $eventtitle = $_POST['eventtitle'];
+        $status = 'deactivated';
 
-        $sql = "DELETE FROM tblevent WHERE eventid = $eventid";
+        $sql = "UPDATE tblevent SET status=? WHERE eventid=?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("si", $status, $eventid);
 
-        echo "SQL Query: " . $sql;
-
-        if ($connection->query($sql) === TRUE) {
-            echo "Event canceled successfully";
+        if ($stmt->execute()) {
+            echo '
+                <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                    <p>Deactivated the event "' . $eventtitle . '"!</p>
+                    <form method="post">
+                        <div style="text-align: center;">
+                            <input type="submit" onclick="window.location.href = window.location.href;" value="DONE" style="width: 40%;">
+                        </div>
+                    </form>
+                </div>
+            ';
         } else {
-            echo "Error canceling event: " . $connection->error;
+            echo "Error updating user data: " . $stmt->error;
         }
     }
+
+    if(isset($_POST['btnActivateEvent'])) {
+        $eventid = $_POST['eventid'];
+        $eventtitle = $_POST['eventtitle'];
+        $status = 'active';
+
+        $sql = "UPDATE tblevent SET status=? WHERE eventid=?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("si", $status, $eventid);
+
+        if ($stmt->execute()) {
+            echo '
+                <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                    <p>Activated the event "' . $eventtitle . '"!</p>
+                    <form method="post">
+                        <div style="text-align: center;">
+                            <input type="submit" onclick="window.location.href = window.location.href;" value="DONE" style="width: 40%;">
+                        </div>
+                    </form>
+                </div>
+            ';
+        } else {
+            echo "Error updating user data: " . $stmt->error;
+        }
+    }
+    // if (isset($_POST['cancel'])) {
+    //     $eventid = $_POST['eventid'];
+
+    //     echo "Event ID: " . $eventid;
+
+    //     $delete_adminevent_sql = "DELETE FROM tbladminevent WHERE eventid = ?";
+    //     $delete_adminevent_stmt = $connection->prepare($delete_adminevent_sql);
+    //     $delete_adminevent_stmt->bind_param("i", $eventid);
+    //     $delete_adminevent_stmt->execute();
+    //     $delete_adminevent_stmt->close();
+
+    //     $sql = "DELETE FROM tblevent WHERE eventid = $eventid";
+
+    //     echo "SQL Query: " . $sql;
+
+    //     if ($connection->query($sql) === TRUE) {
+    //         echo "Event canceled successfully";
+    //     } else {
+    //         echo "Error canceling event: " . $connection->error;
+    //     }
+    // }
 
     function updateUser() {
         global $connection;
