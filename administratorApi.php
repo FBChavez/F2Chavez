@@ -158,6 +158,7 @@
                                         <th>Fee</th>
                                         <th>Date</th>
                                         <th>Time</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -171,6 +172,7 @@
                                         <td>' . $row['eventfee'] . '</td>
                                         <td>' . $row['date'] . '</td>
                                         <td>' . $row['time'] . '</td>
+                                        <td>' . $row['status'] . '</td>
                                     </tr>
                                     <?php endwhile; ?>
                                 </tbody>
@@ -376,6 +378,149 @@
             ';
         }
     }
+    function displayPaidEvents() {
+        global $connection;
+    
+        $query = "SELECT * FROM tblevent WHERE eventfee > 0";
+        $result = $connection->query($query);
+    
+        if ($result->num_rows > 0) {
+            echo '
+                <table>
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Event Fee</th>
+                    </tr>
+            ';
+    
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['eventid'] . '</td>
+                        <td>' . $row['eventtitle'] . '</td>
+                        <td>$' . $row['eventfee'] . '</td>
+                    </tr>
+                ';
+            }
+    
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No paid events found. Sad :(
+                </div>
+            ';
+        }
+    }
+    function displayUserTypes() {
+        global $connection;
+    
+        $query = "SELECT * FROM tbluseraccount WHERE usertype LIKE '%Teacher%' OR usertype LIKE '%Officer%'";
+        $result = $connection->query($query);
+    
+        if ($result->num_rows > 0) {
+            echo '
+                <table>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Name</th>
+                        <th>User Type</th>
+                    </tr>
+            ';
+    
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['acctid'] . '</td>
+                        <td>' . $row['firstname'] . ' ' . $row['lastname'] . '</td>
+                        <td>' . $row['usertype'] . '</td>
+                    </tr>
+                ';
+            }
+    
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No user types matching "teacher" or "officer" found. Sad :(
+                </div>
+            ';
+        }
+    }
+    
+    function displayNumberGenderParticipants() {
+        global $connection;
+    
+        $query = "SELECT gender, COUNT(*) AS count FROM tbluseraccount WHERE gender IN ('Male', 'Female') GROUP BY gender";
+        $result = $connection->query($query);
+    
+        if ($result->num_rows > 0) {
+            echo '
+                <table>
+                    <tr>
+                        <th>Gender</th>
+                        <th>Count</th>
+                    </tr>
+            ';
+    
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['gender'] . '</td>
+                        <td>' . $row['count'] . '</td>
+                    </tr>
+                ';
+            }
+    
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No student data found. Sad :(
+                </div>
+            ';
+        }
+    }
+    function displayEventsByEachAdmin() {
+        global $connection;
+    
+        $query = "SELECT a.adminid, a.name AS admin_name, COUNT(e.eventid) AS event_count
+                  FROM tbladmin a
+                  LEFT JOIN tblevent e ON a.adminid = e.adminid
+                  GROUP BY a.adminid";
+        $result = $connection->query($query);
+    
+        if ($result->num_rows > 0) {
+            echo '
+                <table>
+                    <tr>
+                        <th>Admin ID</th>
+                        <th>Admin Name</th>
+                        <th>Number of Events Created</th>
+                    </tr>
+            ';
+    
+            while ($row = $result->fetch_assoc()) {
+                echo '
+                    <tr>
+                        <td>' . $row['adminid'] . '</td>
+                        <td>' . $row['admin_name'] . '</td>
+                        <td>' . $row['event_count'] . '</td>
+                    </tr>
+                ';
+            }
+    
+            echo '</table>';
+        } else {
+            echo '
+                <div class="body-container" style="height: 50vh; text-align: center;">
+                    No events created by any admin. Sad :(
+                </div>
+            ';
+        }
+    }
+    
 
     function displayParticipantsPerEvent() {
         global $connection;

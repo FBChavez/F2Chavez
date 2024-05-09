@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Include the administrator API
 include 'includes/administratorHeader.php';
 include 'administratorApi.php';

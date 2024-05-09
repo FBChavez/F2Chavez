@@ -41,11 +41,33 @@
     }
 
     #view {
+        padding: 10px;
         background-color: orange;
+        color: white;
+        width: 100%;
+        height: 45px;
+        outline: none;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        border: 2px solid #222831;
     }
 
     #update{
+        padding: 10px;
         background-color: green;
+        color: white;
+        width: 100%;
+        height: 45px;
+        outline: none;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        border: 2px solid #222831;
     }
 
     #deactivate {

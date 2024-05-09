@@ -109,9 +109,52 @@
                         ?>
                     </tbody>
                 </table>
-
+            </div>
         </div>
 
+        <div class="report-container">
+            <div class="userlist-container">
+                <h2 style="padding: 10px">
+                    All Paid Events
+                </h2>
+                <?php
+                    echo displayPaidEvents();
+                ?>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <div class="userlist-container">
+                <h2 style="padding: 10px">
+                    All Teachers or Officers
+                </h2>
+                <?php
+                    echo displayUserTypes();
+                ?>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <div class="userlist-container">
+                <h2 style="padding: 10px">
+                    Number of Males and Females
+                </h2>
+                <?php
+                    echo displayNumberGenderParticipants();
+                ?>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <div class="userlist-container">
+                <h2 style="padding: 10px">
+                    Events of Each Admin
+                </h2>
+                <?php
+                    echo displayEventsByEachAdmin();
+                ?>
+            </div>
+        </div>
 
         <a href="administratorStudentList.php">
             <button class="hidden" id="reports">Back</button>
