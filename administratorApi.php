@@ -10,18 +10,13 @@
             $uname = $_POST['txtusername'];
             $pwd = $_POST['txtpassword'];
 
-            // Query to fetch admin data
             $sql = "SELECT * FROM tbladmin WHERE username='$uname'";
             $result = mysqli_query($connection, $sql);
-            // Get the number of rows returned
             $count = mysqli_num_rows($result);
-            // Check if admin exists
             if($count == 1) {
                 $adminData = mysqli_fetch_assoc($result);
                 
-                // Verify password
                 if(password_verify($pwd, $adminData['password'])) {
-                    // Admin authentication successful, store admin details
                     $stored_admin = $adminData;
                     $_SESSION['username'] = $adminData['username'];
                     $_SESSION['name'] = $adminData['name'];
@@ -45,19 +40,15 @@
             $date=$_POST['eventDate'];
             $time=$_POST['eventTime'];
         
-            // Get adminid from session
             $adminid = $_SESSION['adminid'];
             
-            // Save data to tblevent
             $sql1 = "INSERT INTO tblevent (eventtitle, adminid, eventdescription, eventvenue, eventfee, date, time) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $connection->prepare($sql1);
             $stmt->bind_param("sisssss", $eventtitle, $adminid, $eventdesc, $eventvenue, $eventfee, $date, $time);
             $stmt->execute();
         
-            // Get the auto-generated eventid
             $eventid = mysqli_insert_id($connection);
         
-            // Save adminid and eventid to tbladminevent
             $sql2 = "INSERT INTO tbladminevent (adminid, eventid) VALUES (?, ?)";
             $stmt2 = $connection->prepare($sql2);
             $stmt2->bind_param("ii", $adminid, $eventid);
@@ -70,19 +61,14 @@
 
     function allEvents() {
         global $stored_admin, $connection, $stored_events;
-        // Query to fetch event details from the database
         $reverseEvents = array_reverse($stored_events);
         $query = "SELECT e.*, a.name AS adminName FROM tblevent e INNER JOIN tbladmin a ON e.adminid = a.adminid";
         
-        // Execute the query
         $result = $connection->query($query);
         
-        // Check if there are any rows returned
         if ($result->num_rows > 0) {
-            // Loop through each row
             while ($row = $result->fetch_assoc()) {
               
-                // Output event details
                 echo '
                     <div class="the-event" style="width: 80%;">
                         <center>
@@ -192,23 +178,18 @@
     }
 
     if (isset($_POST['cancel'])) {
-        // Retrieve the event ID from the form submission
         $eventid = $_POST['eventid'];
 
-        // Debugging: Echo the event ID to see if it's properly retrieved
         echo "Event ID: " . $eventid;
 
-        // Delete related records in tbladminevent first
         $delete_adminevent_sql = "DELETE FROM tbladminevent WHERE eventid = ?";
         $delete_adminevent_stmt = $connection->prepare($delete_adminevent_sql);
         $delete_adminevent_stmt->bind_param("i", $eventid);
         $delete_adminevent_stmt->execute();
         $delete_adminevent_stmt->close();
 
-        // Delete the event from the tblevent table
         $sql = "DELETE FROM tblevent WHERE eventid = $eventid";
 
-        // Debugging: Echo the SQL query to see if it's constructed correctly
         echo "SQL Query: " . $sql;
 
         if ($connection->query($sql) === TRUE) {
@@ -221,9 +202,7 @@
     function updateUser() {
         global $connection;
 
-        // Check if all required fields are present
         if(isset($_POST['update']) && isset($_POST['acctid']) && isset($_POST['email']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['usertype'])) {
-            // Retrieve form data
             $acctid = $_POST['acctid'];
             $email = $_POST['email'];
             $username = $_POST['username'];
@@ -231,12 +210,10 @@
             $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
             $usertype = $_POST['usertype'];
 
-            // Prepare update query
             $sql = "UPDATE tbluseraccount SET emailadd=?, username=?, password=?, usertype=? WHERE acctid=?";
             $stmt = $connection->prepare($sql);
             $stmt->bind_param("ssssi", $email, $username, $hashed_password, $usertype, $acctid);
 
-            // Execute the update query
             if ($stmt->execute()) {
                 echo '<script>alert("User data updated successfully");</script>';
                 echo '<script>window.location.href = "studentList.php";</script>';
@@ -244,7 +221,6 @@
                 echo "Error updating user data: " . $stmt->error;
             }
 
-            // Close statement
             $stmt->close();
         } else {
             echo "All fields are required for updating user data";
@@ -254,28 +230,22 @@
     function getUserData($acctid) {
         global $connection;
 
-        // Prepare query to fetch user data
         $sql = "SELECT * FROM tbluseraccount WHERE acctid = ?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("i", $acctid);
 
-        // Execute query
         $stmt->execute();
 
-        // Get result
         $result = $stmt->get_result();
 
-        // Fetch user data
         $userData = $result->fetch_assoc();
 
-        // Close statement
         $stmt->close();
 
         return $userData;
     }
 
 
-    /* I added a table in the reports to show the number of students for each program */
     function displayUsersPerProgram() {
         global $connection;
 
@@ -306,7 +276,6 @@
         }
     }
 
-    /* table nis para participants per event */
     function displayParticipantsPerEvent() {
         global $connection;
 
@@ -376,6 +345,179 @@
                     No user events! Sad :(
                 </div>
             ';
+        }
+    }
+
+    function displayStudentList() {
+        global $connection;
+
+        $query = "SELECT * FROM tbluseraccount";
+        $result = $connection->query($query);
+
+        echo '
+            <div class="userlist-container">
+                <h1 style="padding: 10px;">List of All User Accounts</h1>
+                <table id="tblUserAccounts" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <!-- <th>Account Id</th> -->
+                            <th>Name</th>
+                            <th>Email Address</th>
+                            <th>Username</th>
+                            <th>User Type</th>
+                            <th>Year Level</th>
+                            <th>Program</th>
+                            <th>Status</th>
+                            <th colspan="3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        ';
+
+        while ($row = $result->fetch_assoc()) {
+                    echo '
+                        <tr>
+                            <!-- <td>' . $row['acctid'] . '</td> -->
+                            <td style="text-align: left;">' . $row['firstname'] . '' . $row['lastname'] . '</td>
+                            <td style="text-align: left;">' . $row['emailadd'] . '</td>
+                            <td style="text-align: left;">' . $row['username'] . '</td>
+                            <td>' . $row['usertype'] . '</td>
+                            <td>' . $row['yearlevel'] . '</td>
+                            <td>' . $row['program'] . '</td>
+                            <td>' . $row['status'] . '</td>
+                            <td>
+                                <form action="viewUser.php" method="post">
+                                    <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
+                                    <button type="submit" name="view" id="view">VIEW</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="updateUser.php" method="post">
+                                    <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
+                                    <button type="submit" name="update" id="update">UPDATE</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
+                                    <input type="hidden" name="firstname" value="' . $row['firstname'] . '">
+                                    <input type="hidden" name="lastname" value="' . $row['lastname'] . '">
+                                    <input type="hidden" name="status" value="' . $row['status'] . '">
+                            ';
+                                    if($row['status'] == "active") {
+                                        echo '<input type="submit" name="btnDisplayDeactivationConfirmation" id="deactivate" value="Deactivate">';
+                                    } else {
+                                        echo '<input type="submit" name="btnDisplayActivationConfirmation" id="activate" value="Activate">';
+                                    }
+                            echo '
+                                </form>
+                            </td>
+                        </tr>
+                    ';
+        }
+
+                echo '
+                    </tbody>
+                        </table>
+
+                        <a href="administratorReports.php">
+                            <button class="hidden" id="reports">Open Reports</button>
+                        </a>
+                    </div>
+                ';
+
+        if(isset($_POST['btnDisplayDeactivationConfirmation'])) {
+            $acctid = $_POST['acctid'];
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            echo '
+                <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                    <p>Are you sure you want to deactivate the account of user "' . $firstname . ' ' . $lastname . '"?</p>
+                    <form method="post">
+                        <input type="hidden" name="acctid" value="' . $acctid . '">
+                        <div style="text-align: center;">
+                            <input type="hidden" name="acctid" value="' . $acctid . '">
+                            <input type="hidden" name="firstname" value="' . $firstname . '">
+                            <input type="hidden" name="lastname" value="' . $lastname . '">
+                            <input type="submit" name="btnDeactivateUser" value="Yes" style="width: 40%;">
+                            <input type="submit" onclick="window.location.href = window.location.href;" value="No" style="width: 40%;">
+                        </div>
+                    </form>
+                </div>
+            ';
+        }
+
+        if(isset($_POST['btnDisplayActivationConfirmation'])) {
+            $acctid = $_POST['acctid'];
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            echo '
+                <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                    <p>Activate the account of user "' . $firstname . ' ' . $lastname . '"?</p>
+                    <form method="post">
+                        <input type="hidden" name="acctid" value="' . $acctid . '">
+                        <div style="text-align: center;">
+                            <input type="hidden" name="acctid" value="' . $acctid . '">
+                            <input type="hidden" name="firstname" value="' . $firstname . '">
+                            <input type="hidden" name="lastname" value="' . $lastname . '">
+                            <input type="submit" name="btnActivateUser" value="Yes" style="width: 40%;">
+                            <input type="submit" onclick="window.location.href = window.location.href;" value="No" style="width: 40%;">
+                        </div>
+                    </form>
+                </div>
+            ';
+        }
+
+        if(isset($_POST['btnDeactivateUser'])) {
+            $acctid = $_POST['acctid'];
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            $status = 'deactivated';
+
+            $sql = "UPDATE tbluseraccount SET status=? WHERE acctid=?";
+            $stmt = $connection->prepare($sql);
+            $stmt->bind_param("si", $status, $acctid);
+
+            if ($stmt->execute()) {
+                echo '
+                    <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                        <p>Deactivated the account of user "' . $firstname . ' ' . $lastname . '"!</p>
+                        <form method="post">
+                            <div style="text-align: center;">
+                                <input type="submit" onclick="window.location.href = window.location.href;" value="DONE" style="width: 40%;">
+                            </div>
+                        </form>
+                    </div>
+                ';
+            } else {
+                echo "Error updating user data: " . $stmt->error;
+            }
+        }
+
+        if(isset($_POST['btnActivateUser'])) {
+            $acctid = $_POST['acctid'];
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            $status = 'active';
+
+            $sql = "UPDATE tbluseraccount SET status=? WHERE acctid=?";
+            $stmt = $connection->prepare($sql);
+            $stmt->bind_param("si", $status, $acctid);
+
+            if ($stmt->execute()) {
+                echo '
+                    <div id="confirmation_box" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid black; z-index: 9999;">
+                        <p>Activated the account of user "' . $firstname . ' ' . $lastname . '"!</p>
+                        <form method="post">
+                            <div style="text-align: center;">
+                                <input type="submit" onclick="window.location.href = window.location.href;" value="DONE" style="width: 40%;">
+                            </div>
+                        </form>
+                    </div>
+                ';
+            } else {
+                echo "Error updating user data: " . $stmt->error;
+            }
         }
     }
 ?>

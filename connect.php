@@ -51,7 +51,8 @@
         password VARCHAR(100) NOT NULL,
         usertype VARCHAR(20) NOT NULL,
         yearlevel INT(5) NOT NULL,
-        program VARCHAR(50) NOT NULL
+        program VARCHAR(50) NOT NULL,
+        status VARCHAR(50) DEFAULT 'active'
     )";
 
     $sql5 = "CREATE TABLE IF NOT EXISTS tbluserevent (
