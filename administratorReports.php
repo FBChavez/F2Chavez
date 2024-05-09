@@ -148,7 +148,7 @@
         <div class="report-container">
             <div class="userlist-container">
                 <h2 style="padding: 10px">
-                    Events of Each Admin
+                    Number of Events for Each Admin
                 </h2>
                 <?php
                     echo displayEventsByEachAdmin();
