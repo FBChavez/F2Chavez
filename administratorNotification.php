@@ -1,9 +1,14 @@
 <?php
     session_start();
     include 'connect.php';
+    include 'eventAPI.php';
+    if (!isset($_SESSION['adminid'])) {
+        header("Location: login.php");
+        exit();
+    }
     include "includes/administratorHeader.php";
 
-    include 'eventAPI.php';
+    
 ?>
 <style>
     button {

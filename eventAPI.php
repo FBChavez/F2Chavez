@@ -73,7 +73,7 @@
             $acctid = $_POST['acctid'];
             $eventid = $_POST['eventid'];
 
-            $update_sql = "UPDATE tbluserevent SET status = 'rejected' WHERE acctid = ? AND eventid = ?";
+            $update_sql = "UPDATE tbluserevent SET status = 'rejected' WHERE acctid = ? AND eventid = ?";            
             $update_stmt = $connection->prepare($update_sql);
             $update_stmt->bind_param("ii", $acctid, $eventid);
             $update_stmt->execute();
@@ -158,4 +158,44 @@
             ';
         }
     }
+
+    function displayNotifications($acctid) {
+        global $connection;
+    
+        $sql = "SELECT * FROM tbluserevent WHERE status IN ('accepted', 'rejected') AND acctid = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("i", $acctid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $eventid = $row['eventid'];
+
+                $event_sql = "SELECT * FROM tblevent WHERE eventid = ?";
+                $stmt = $connection->prepare($event_sql);
+                $stmt->bind_param("i", $eventid);
+                $stmt->execute();
+                $event_result = $stmt->get_result();
+
+                if ($event_result && $event_result->num_rows > 0) {
+                    $event_row = $event_result->fetch_assoc();
+                    $eventtitle = $event_row['eventtitle'];
+                    
+                    echo '
+                    <div class="the-event" style="width: 50%;">
+                        <table id="tblUserEvents" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <tr>
+                                <td>Your request to join "' . $eventtitle . '" has been ' . $row['status'] . '.</td>
+                            </tr>
+                        </table>
+                    </div>';
+                }
+            }
+        } else {
+            // No notifications found
+            echo 'No notifications found.';
+        }
+
+    }   
 ?>
