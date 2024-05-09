@@ -64,8 +64,8 @@
             $update_stmt->bind_param("ii", $acctid, $eventid);
             $update_stmt->execute();
             $update_stmt->close();
-
-            header("Location: administratorNotification.php");
+            echo '<script>window.location.href = "administratorNotification.php";</script>';            
+            //header("Location: administratorNotification.php");
             exit();
         }
 
@@ -78,8 +78,8 @@
             $update_stmt->bind_param("ii", $acctid, $eventid);
             $update_stmt->execute();
             $update_stmt->close();
-
-            header("Location: administratorNotification.php");
+            echo '<script>window.location.href = "administratorNotification.php";</script>';            
+            //header("Location: administratorNotification.php");
             exit();
         }
 
