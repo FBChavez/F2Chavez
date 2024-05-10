@@ -20,6 +20,7 @@
         eventfee INT(10) NOT NULL,
         date DATE NOT NULL,
         time TIME NOT NULL,
+        status VARCHAR(50) DEFAULT 'active',
         FOREIGN KEY (adminid) REFERENCES tbladmin(adminid)
     )";
 

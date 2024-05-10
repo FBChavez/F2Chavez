@@ -108,7 +108,6 @@
                 $result_name = $connection->query($query_name);
                 $row_name = $result_name->fetch_assoc();
 
-
                 $currentPage = basename($_SERVER['PHP_SELF'], ".php");
                 $excludePages = array("administratorReports");
                 if (!in_array($currentPage, $excludePages)) {
@@ -163,17 +162,17 @@
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $row_name ?>
-                                    <tr>
-                                        <td>' . $row['eventid'] . '</td>
-                                        <td>' . $row['eventtitle'] . '</td>
-                                        <td>' . $row_name['name'] . '</td>
-                                        <td id="description">' . $row['eventdescription'] . '</td>
-                                        <td>' . $row['eventvenue'] . '</td>
-                                        <td>' . $row['eventfee'] . '</td>
-                                        <td>' . $row['date'] . '</td>
-                                        <td>' . $row['time'] . '</td>
-                                        <td>' . $row['status'] . '</td>
-                                    </tr>
+                                        <tr>
+                                            <td>' . $row['eventid'] . '</td>
+                                            <td>' . $row['eventtitle'] . '</td>
+                                            <td>' . $row_name['name'] . '</td>
+                                            <td id="description">' . $row['eventdescription'] . '</td>
+                                            <td>' . $row['eventvenue'] . '</td>
+                                            <td>' . $row['eventfee'] . '</td>
+                                            <td>' . $row['date'] . '</td>
+                                            <td>' . $row['time'] . '</td>
+                                            <td>' . $row['status'] . '</td>
+                                        </tr>
                                     <?php endwhile; ?>
                                 </tbody>
                             </table>
@@ -634,13 +633,13 @@
                             <td>
                                 <form action="viewUser.php" method="post">
                                     <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
-                                    <button type="submit" name="view" id="view">VIEW</button>
+                                    <input type="submit" name="view" id="view" value="View">
                                 </form>
                             </td>
                             <td>
                                 <form action="updateUser.php" method="post">
                                     <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
-                                    <button type="submit" name="update" id="update">UPDATE</button>
+                                    <input type="submit" name="update" id="update" value="Update">
                                 </form>
                             </td>
                             <td>

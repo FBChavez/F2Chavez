@@ -72,6 +72,7 @@
 
     #deactivate {
         padding: 10px;
+
         background-color: #800000;
         color: white;
     }

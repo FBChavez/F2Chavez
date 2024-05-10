@@ -48,7 +48,9 @@
                 $result = $stmt->get_result();
                 $row = $result->fetch_assoc();
 
-                if($result->num_rows == 0){
+                if($row['status'] == "deactivated") {
+                    echo "<div class='message-box error'>Account might be deactivated.</div>";
+                } else if($result->num_rows == 0){
                     echo "<div class='message-box error'>Username not existing.</div>";
                 } else if(password_verify($pwd, $row['password'])){
                     $_SESSION['username'] = $row['username'];
