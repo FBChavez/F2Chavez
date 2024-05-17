@@ -6,10 +6,12 @@
 ?>
 
 <body>
-    <div class="body-container">
-        <?php
-            echo displayNotifications($_SESSION['acctid']);
-        ?>
+    <div class="create-container">
+        <div class="body-container">
+            <?php
+                echo displayNotifications($_SESSION['acctid']);
+            ?>
+        </div>
     </div>
 </body>
 

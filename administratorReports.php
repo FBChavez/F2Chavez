@@ -5,6 +5,16 @@
     include("administratorApi.php");
 ?>
 
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #chartContainer {
+            max-width: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+
 <style>
     .report-container {
         margin: 10px;
@@ -153,6 +163,59 @@
                 <?php
                     echo displayEventsByEachAdmin();
                 ?>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <div class="userlist-container">
+                <h2 style="padding: 10px">
+                    Male/Female Ratio
+                </h2>
+                <div id="chartContainer">
+                    <canvas id="genderRatioChart" width="300" height="300"></canvas>
+                </div>
+                <script>
+                    const genderData = <?php echo $genderDataJson; ?>;
+
+                    const data = {
+                        labels: Object.keys(genderData),
+                        datasets: [{
+                            label: 'Gender Ratio',
+                            data: Object.values(genderData),
+                            backgroundColor: [
+                                'rgba(255, 162, 185, 0.2)',  // Color for Female (#FFA2B9)
+                                'rgba(54, 162, 235, 0.2)' // Color for Male (blue)
+                            ],
+                            borderColor: [
+                                'rgba(255, 162, 185, 1)',  // Border color for Female (#FFA2B9)
+                                'rgba(54, 162, 235, 1)'   // Border color for Male (blue)
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Gender Ratio'
+                                }
+                            }
+                        }
+                    };
+
+                    const genderRatioChart = new Chart(
+                        document.getElementById('genderRatioChart'),
+                        config
+                    );
+                </script>
             </div>
         </div>
 

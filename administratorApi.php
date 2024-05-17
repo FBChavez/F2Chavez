@@ -318,7 +318,7 @@
 
             if ($stmt->execute()) {
                 echo '<script>alert("User data updated successfully");</script>';
-                echo '<script>window.location.href = "studentList.php";</script>';
+                echo '<script>window.location.href = "administratorStudentList.php";</script>';
             } else {
                 echo "Error updating user data: " . $stmt->error;
             }
@@ -623,7 +623,7 @@
                     echo '
                         <tr>
                             <!-- <td>' . $row['acctid'] . '</td> -->
-                            <td style="text-align: left;">' . $row['firstname'] . '' . $row['lastname'] . '</td>
+                            <td style="text-align: left;">' . $row['firstname'] . ' ' . $row['lastname'] . '</td>
                             <td style="text-align: left;">' . $row['emailadd'] . '</td>
                             <td style="text-align: left;">' . $row['username'] . '</td>
                             <td>' . $row['usertype'] . '</td>
@@ -631,13 +631,13 @@
                             <td>' . $row['program'] . '</td>
                             <td>' . $row['status'] . '</td>
                             <td>
-                                <form action="viewUser.php" method="post">
+                                <form action="administratorViewUser.php" method="post">
                                     <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
                                     <input type="submit" name="view" id="view" value="View">
                                 </form>
                             </td>
                             <td>
-                                <form action="updateUser.php" method="post">
+                                <form action="administratorUpdateUser.php" method="post">
                                     <input type="hidden" name="acctid" value="' . $row['acctid'] . '">
                                     <input type="submit" name="update" id="update" value="Update">
                                 </form>
@@ -765,4 +765,21 @@
             }
         }
     }
+
+    function displayPieChartGenderRatio() {
+        global $connection;
+
+        $query = "SELECT gender, COUNT(*) as count FROM tbluseraccount GROUP BY gender";
+        $result = $connection->query($query);
+
+        $genderData = [];
+        while ($row = $result->fetch_assoc()) {
+            $genderData[$row['gender']] = $row['count'];
+        }
+
+        return $genderData;
+    }
+
+    $genderData = displayPieChartGenderRatio();
+    $genderDataJson = json_encode($genderData);
 ?>
